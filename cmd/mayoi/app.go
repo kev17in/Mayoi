@@ -300,11 +300,14 @@ type app struct {
 	// fileCol caches the last unlocked column used for files. Removal clears
 	// it; column and activate refresh it. Use fileColumn to resolve a live,
 	// unlocked target before opening files, including during restoration.
-	fileCol  *column
-	nextID   int
-	nextTab  int
-	nextCol  int
-	untitled int
+	fileCol        *column
+	nextID         int
+	pluginWindowID uint64
+	nextPluginCall uint64
+	pluginCalls    map[uint64]func()
+	nextTab        int
+	nextCol        int
+	untitled       int
 	// closed are the tabs closed, the last last, which ⇧⌘T opens again.
 	closed []closedTab
 	// shownDoc is the document the column with the keyboard showed last
@@ -692,6 +695,7 @@ func (a *app) saveDocElse(d *document, then, cancelled func()) {
 			a.dropKept(d)
 			// A path not read from: nothing on disk is its old file.
 			d.path, d.markdown, d.stamp = path, false, nil
+			d.language, d.languageOwner, d.lexerOwner = "", "", nil
 			d.hl.Close()
 			d.hl = highlight.New(highlight.Lexer(path), a.invalidate)
 			a.saveDocElse(d, then, cancelled)
@@ -775,6 +779,7 @@ func (a *app) saveDocAs(d *document, path string) {
 	}
 	// A path not read from: nothing on disk is its old file.
 	d.path, d.markdown, d.stamp = path, false, nil
+	d.language, d.languageOwner, d.lexerOwner = "", "", nil
 	d.hl.Close()
 	d.hl = highlight.New(highlight.Lexer(path), a.invalidate)
 	a.saveDoc(d, nil)
