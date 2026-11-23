@@ -5,6 +5,13 @@ needs a `## <version>` section here, or its build fails.
 
 ## Unreleased
 
+- A big file that changed on disk since it was opened asks about its save: overwrite it, or take the file's text again.
+- A big file can be saved to a new path, or again after its file was removed from the disk.
+- Typing while a big file saves in the background no longer makes its next save fail.
+- A file being written to keeps its text in the editor while it is read again, rather than show the loading view.
+- Local files past half a gigabyte open in windows of an index of their lines, so their whole text is never held in memory.
+- Closing a tab or switching project stops a whole-file read under way.
+- A document too large for a language server is no longer sent to it whole on every change.
 - **Sessions** no longer lists Pi subagent sessions such as `general-purpose#3c8c2fa2`; Pi forks still show.
 - **Download** and **Upload** of remote files and folders now work on Windows and in WSL.
 - Dragging a file in the explorer no longer stops when you scroll with the wheel.
@@ -88,6 +95,10 @@ needs a `## <version>` section here, or its build fails.
 ## 0.23.0
 
 - Type at several places at once: **Selection → Add Cursor Above** and **Below** add a caret on the next line.
+- Local files over the new **Big Files Over** setting (32 MB by default) open with a progress bar as they are read.
+- The whole text of a big file is in the editor: nothing is left out, and files over 64 MB open too, up to 2 GB.
+- A big file can be edited, saved and undone as any other; **Go to Line** and `Find` reach all of it.
+- Saving a big file that changed on disk since it was opened says so instead of writing over it.
 - Alt-click (`⌥`-click on macOS) adds a caret or takes one away; `⌘`-click still goes to a definition.
 - `⌘D` selects the next match of the word or selection, and `⇧⌘L` selects every match at once.
 - Drag with `Shift+Alt` or the middle button to select a column; `⇧⌥⌘` with the arrows does it from the keyboard.
@@ -116,6 +127,7 @@ needs a `## <version>` section here, or its build fails.
 - Each built-in server has a `path` setting on the **Plugins** page for a program that isn't on your PATH.
 - A plugin you install under the name of a built-in one now takes its place.
 - C++, JSX and TSX files now reach language servers as `cpp`, `javascriptreact` and `typescriptreact`.
+
 - Files dropped from the Finder on a project's square switch to that project and open there as tabs.
 - Files dropped on the empty part of the project rail open in the project shown.
 - Pictures dropped from the Finder on a square open as files; use **Choose Icon…** to set an icon.
